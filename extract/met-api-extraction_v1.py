@@ -25,13 +25,19 @@ with open(extraction_path, "a") as f:
     for object_id in ids_list:
         if object_id in fetched_ids:
             continue
-        response = requests.get(f"https://collectionapi.metmuseum.org/public/collection/v1/objects/{object_id}", headers=headers)
-        if response.status_code == 200:
-            record = response.json()
-            f.write(json.dumps(record) + "\n")
-            num_records_fetched +=1
-        else:
-            print(f"skipped {object_id}: status {response.status_code}")        
-        if num_records_fetched % 100 == 0:
-            print(f"{num_records_fetched} records fetched successfully")
-        time.sleep(0.5)
+        while True:
+            response = requests.get(f"https://collectionapi.metmuseum.org/public/collection/v1/objects/{object_id}", headers=headers)
+            if response.status_code == 200:
+                record = response.json()
+                f.write(json.dumps(record) + "\n")
+                num_records_fetched +=1
+                if num_records_fetched % 100 == 0:
+                    print(f"{num_records_fetched} records fetched successfully")
+                time.sleep(0.5)
+                break
+            elif response.status_code == 403:
+                print(f"rate limited on {object_id}")
+                time.sleep(61)
+            else:
+                print(f"skipped {object_id}: status {response.status_code}")
+                break        
