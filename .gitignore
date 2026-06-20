@@ -1,3 +1,4 @@
 raw/*.ndjson
 raw/*.json
-raw/*.csv  
+raw/*.csv
+cleaned/
