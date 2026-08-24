@@ -12,13 +12,7 @@ dimensions = ['Circumference (cm)', 'Depth (cm)', 'Diameter (cm)', 'Height (cm)'
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 raw_dir = os.path.join(project_root, "raw")
 os.makedirs(raw_dir, exist_ok=True)
-kaggle_path = os.path.join(raw_dir, "kaggle-famous-paintings")
 moma_path = os.path.join(raw_dir, "moma-collection")
-
-for file in os.listdir(kaggle_path):
-    df = pd.read_csv(os.path.join(kaggle_path, file))
-    df.replace(excel_errors, pd.NA, inplace=True)
-    df.to_csv(os.path.join(project_root, "cleaned", "famous-paintings-cleaned", file + "-cleaned.csv"), index=False)
 
 for file in os.listdir(moma_path):
     df = pd.read_csv(os.path.join(moma_path, file), 
@@ -42,3 +36,4 @@ for file in os.listdir(moma_path):
     df.to_csv(os.path.join(project_root, "cleaned", "moma-cleaned", file + "-cleaned.csv"),
             index=False,
             quoting=csv.QUOTE_ALL)
+
