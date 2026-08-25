@@ -7,35 +7,56 @@ raw_dir = os.path.join(project_root, "raw")
 os.makedirs(raw_dir, exist_ok=True)
 ulan_path = os.path.join(raw_dir, "getty-ulan")
 
+#a very small number (likely < 10) of the names have newline imbedded in them
+def clean_text(text):
+    if text is None:
+        return None
+    return ' '.join(text.split())
 
-def parse_ulan_file(filepath):
-    tree = ET.parse(os.path.join(ulan_path, filename))
-    root = tree.getroot()
 
+def get_ulan_info(root):
     pref_bio = root.find('.//Preferred_Biography')
     pref_nat = root.find('.//Preferred_Nationality')
 
     return {
-        'ulan_id': root.find('.//Subject').get('Subject_ID'),
-        'preferred_name': root.find('.//Preferred_Term/Term_Text').text,
-        'non_preferred_names': [el.text for el in root.findall('.//Non-Preferred_Term/Term_Text')],
+        'ulan_id': root.find('Subject').get('Subject_ID'),
         'birth_date': pref_bio.find('Birth_Date').text if pref_bio is not None else None,
         'death_date': pref_bio.find('Death_Date').text if pref_bio is not None else None,
         'nationality': pref_nat.find('Nationality_Code').text.split('/')[1] if pref_nat is not None else None,
     }
 
+def get_ulan_names(root, names):
+    ulan_id = root.find('Subject').get('Subject_ID')
+
+    names.append({
+        'ulan_id': ulan_id,
+        'name': clean_text(root.find('.//Preferred_Term/Term_Text').text),
+        'is_preferred': True
+    })
+    for e1 in root.findall('.//Non-Preferred_Term/Term_Text'):
+        if e1.text:
+            names.append({
+                'ulan_id': ulan_id,
+                'name': clean_text(e1.text),
+                'is_preferred': False })
+
 #single filename for testing (picasso)
 # filename = os.path.join(ulan_path, "500009666.xml")
 
 records = []
+names = []
+
 for filename in os.listdir(ulan_path):
-    if not filename.endswith('.xml'):
-        continue
     try:
-        records.append(parse_ulan_file(os.path.join(ulan_path, filename)))
+        tree = ET.parse(os.path.join(ulan_path, filename))
+        root = tree.getroot()
+        records.append(get_ulan_info(root))
+        get_ulan_names(root, names)
     except Exception as e:
         print(f"Skipped {filename}: {e}")
-        #some of the xmls are just "Too Many Connections, which will be skipped"
+        #some of the xmls are just "Too Many Connections", which will be skipped
 
-df = pd.DataFrame(records)
-df.to_csv(os.path.join(project_root, "cleaned", 'ulan_lookup.csv'), index=False)
+infodf = pd.DataFrame(records)
+namesdf = pd.DataFrame(names)
+infodf.to_csv(os.path.join(project_root, "cleaned", 'ulan', 'ulan_info.csv'), index=False)
+namesdf.to_csv(os.path.join(project_root, "cleaned", 'ulan', 'ulan_names.csv'), index=False)
