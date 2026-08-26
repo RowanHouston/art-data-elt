@@ -1,3 +1,4 @@
 raw/
 cleaned/
 logs/
+.env

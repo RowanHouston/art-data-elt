@@ -1,7 +1,14 @@
 import pandas as pd
 import os
 import csv
+from dotenv import load_dotenv
+from sqlalchemy import create_engine
 
+
+load_dotenv()
+engine = create_engine(
+    f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
+)
 
 #This script should be run only once since there is no logic for already existing files
 #Mainly just exists so that I can import the csvs into dbeaver easily for viewing as a postgres database
@@ -33,7 +40,5 @@ for file in os.listdir(moma_path):
 
     df = df.drop(columns=['Dimensions'], errors='ignore')
 
-    df.to_csv(os.path.join(project_root, "cleaned", "moma-cleaned", file + "-cleaned.csv"),
-            index=False,
-            quoting=csv.QUOTE_ALL)
+    df.to_sql('moma_' + file, engine, schema='raw', if_exists='replace', index=False)
 

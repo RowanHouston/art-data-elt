@@ -1,6 +1,15 @@
 import xml.etree.ElementTree as ET
 import os
 import pandas as pd
+import csv
+from dotenv import load_dotenv
+from sqlalchemy import create_engine
+
+
+load_dotenv()
+engine = create_engine(
+    f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
+)
 
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 raw_dir = os.path.join(project_root, "raw")
@@ -11,8 +20,9 @@ ulan_path = os.path.join(raw_dir, "getty-ulan")
 def clean_text(text):
     if text is None:
         return None
-    return ' '.join(text.split())
-
+    text_no_line_breaks = ' '.join(text.split())
+    text_no_escapes = text_no_line_breaks.replace('\\', '')
+    return text_no_escapes
 
 def get_ulan_info(root):
     pref_bio = root.find('.//Preferred_Biography')
@@ -58,5 +68,5 @@ for filename in os.listdir(ulan_path):
 
 infodf = pd.DataFrame(records)
 namesdf = pd.DataFrame(names)
-infodf.to_csv(os.path.join(project_root, "cleaned", 'ulan', 'ulan_info.csv'), index=False)
-namesdf.to_csv(os.path.join(project_root, "cleaned", 'ulan', 'ulan_names.csv'), index=False)
+infodf.to_sql('ulan_info', engine, schema='raw', if_exists='replace', index=False)
+namesdf.to_sql('ulan_names', engine, schema='raw', if_exists='replace', index=False)
