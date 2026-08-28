@@ -16,4 +16,11 @@ with open(os.path.join('raw', 'met_objects.ndjson')) as f:
     for line in f:
         records.append(json.loads(line))
 
-pd.DataFrame(records).to_sql('met_objects', engine, schema='raw', if_exists='replace', index=False)
+df = pd.DataFrame(records)
+
+for col in df.columns:
+        if df[col].dtype == 'object':
+            df[col] = df[col].apply(
+                lambda x: json.dumps(x) if isinstance(x, (dict, list)) else x)
+
+df.to_sql('met_objects', engine, schema='raw', if_exists='replace', index=False)

@@ -40,5 +40,5 @@ for file in os.listdir(moma_path):
 
     df = df.drop(columns=['Dimensions'], errors='ignore')
 
-    df.to_sql('moma_' + file, engine, schema='raw', if_exists='replace', index=False)
+    df.to_sql('moma_' + (file.lower())[:-4], engine, schema='raw', if_exists='replace', index=False)
 

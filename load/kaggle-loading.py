@@ -22,4 +22,4 @@ kaggle_path = os.path.join(raw_dir, "kaggle-famous-paintings")
 for file in os.listdir(kaggle_path):
     df = pd.read_csv(os.path.join(kaggle_path, file))
     df.replace(excel_errors, pd.NA, inplace=True)
-    df.to_sql('kaggle_' + file, engine, schema='raw', if_exists='replace', index=False)
+    df.to_sql('kaggle_' + (file.lower())[:-4], engine, schema='raw', if_exists='replace', index=False)

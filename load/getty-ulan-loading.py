@@ -1,7 +1,6 @@
 import xml.etree.ElementTree as ET
 import os
 import pandas as pd
-import csv
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 
