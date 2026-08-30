@@ -1,4 +1,4 @@
-# art-data-etl
+# art-data-elt
 
 ## Sources
 There are four sources used in the dataset:
