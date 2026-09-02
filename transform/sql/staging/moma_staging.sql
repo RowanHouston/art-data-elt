@@ -11,7 +11,7 @@ SELECT
 	"BeginDate" AS birth_year,
 	"EndDate" AS death_year,
 	"ULAN" AS ulan_id,
-	"Wiki QID" AS Wikidata_id
+	"Wiki QID" AS wikidata_id
 	'moma' AS source
 FROM raw.moma_artists;
 

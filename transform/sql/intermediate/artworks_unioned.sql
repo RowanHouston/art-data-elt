@@ -46,8 +46,15 @@ SELECT
     ka.artist_name AS artist_full_name
     kw.title
     'Paintings' AS department
+        ma.classification,
+    NULL AS medium,
+    NULL AS date,
+    NULL AS begin_date,
+    NULL AS end_date,
+    NULL AS credit_line,
     kcs.height_cm
     kcs.width_cm
+    NULL AS depth -- all paintings so depth ~0, just leave as null since paintings in other datasets have depth including frames
     kil.image_url
     kil.object_url
     km.museum_name AS museum
