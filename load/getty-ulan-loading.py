@@ -27,10 +27,13 @@ def get_ulan_info(root):
     pref_bio = root.find('.//Preferred_Biography')
     pref_nat = root.find('.//Preferred_Nationality')
 
+    sex = pref_bio.find('Sex').text
+    gender = sex if sex is not None else None
     return {
         'ulan_id': root.find('Subject').get('Subject_ID'),
         'birth_date': pref_bio.find('Birth_Date').text if pref_bio is not None else None,
         'death_date': pref_bio.find('Death_Date').text if pref_bio is not None else None,
+        'gender' : gender,
         'nationality': pref_nat.find('Nationality_Code').text.split('/')[1] if pref_nat is not None else None,
     }
 

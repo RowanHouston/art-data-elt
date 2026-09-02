@@ -11,20 +11,24 @@ SELECT
 	"BeginDate" AS birth_year,
 	"EndDate" AS death_year,
 	"ULAN" AS ulan_id,
+	"Wiki QID" AS Wikidata_id
 	'moma' AS source
 FROM raw.moma_artists;
 
 CREATE TABLE staging.stg_moma_artworks AS
 SELECT
-    "ObjectID" as artwork_id,
-	"ConstituentID" as artist_id,
-	"Title" as title,
-	"Date" as date,
-	"Classificatoin" as classification,
-	"Department" as department,
-    "CreditLine" as credit_line,
-	"URL" as url,
-	"ImageURL" as image_url,
+    "ObjectID" AS artwork_id,
+	"ConstituentID" AS artist_id,
+	"Title" AS title,
+	"Date" AS date,
+	"BeginDate" AS begin_date,
+	"EndDate" AS end_date
+	"Classificatoin" AS classification,
+	"Department" AS department,
+	"Medium" AS medium
+    "CreditLine" AS credit_line,
+	"URL" AS object_url,
+	"ImageURL" AS image_url,
     "Depth" AS depth_cm,
     "Height" AS height_cm,
     "Width" AS width_cm,

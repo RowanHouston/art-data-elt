@@ -13,12 +13,13 @@ SELECT
     "nationality",
     "birth" AS birth_year,
     "death" AS death_year
+    'kaggle' AS source
 FROM raw.kaggle_artist;
 
 CREATE TABLE staging.stg_kaggle_image_link AS
 SELECT
     "work_id" AS artwork_id,
-    "url",
+    "url" AS object_url,
     "thumbnail_large_url" AS image_url
 FROM raw.kaggle_image_link;
 

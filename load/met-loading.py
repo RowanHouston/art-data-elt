@@ -17,6 +17,8 @@ with open(os.path.join('raw', 'met_objects.ndjson')) as f:
         records.append(json.loads(line))
 
 df = pd.DataFrame(records)
+df = df['artistULAN_URL'].replace({'(not assigned)', ''}) #messes up ulan url finding script
+
 
 for col in df.columns:
         if df[col].dtype == 'object':

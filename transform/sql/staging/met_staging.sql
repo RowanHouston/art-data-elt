@@ -13,10 +13,14 @@ SELECT
     "artistBeginDate" AS birth_year,
     "artistEndDate" AS death_year,
     "artistGender" AS gender,
+    "artistWikidata_URL" AS artist_wikidata_url
     "artistULAN_URL" AS ulan_url,
-    "objectEndDate" AS date,
+    "objectDate" AS date,
+    "objectBeginDate" AS begin_date,
+    "objectEndDate" AS end_date,
     "dimensions" AS dimensions_string,
     "dimensionsParsed" AS dimensions_json,
     "creditLine" AS credit_line,
-    "objectURL" as url
+    "objectURL" as object_url
+    'met' AS source
 FROM raw.met_objects;
