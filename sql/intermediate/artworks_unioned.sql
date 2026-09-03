@@ -13,7 +13,7 @@ SELECT
     aw.depth_cm,
     aw.image_url,
     aw.object_url,
-    'MoMA' AS museum
+    'MoMA' AS museum,
     aw.source
 FROM staging.stg_moma_artworks AS aw LEFT JOIN staging.stg_moma_artists AS at
 ON aw.artist_id = at.artist_id
@@ -35,7 +35,7 @@ SELECT
     mm.depth_cm,
     ma.image_url,
     ma.object_url,
-    'The Met' AS museum
+    'The Met' AS museum,
     ma.source
 FROM staging.stg_met_artworks AS ma LEFT JOIN intermediate.int_met_measurements AS mm
 ON ma.artwork_id = mm.artwork_id
@@ -43,22 +43,22 @@ ON ma.artwork_id = mm.artwork_id
 UNION ALL
 
 SELECT
-    ka.artist_name AS artist_full_name
-    kw.title
-    'Paintings' AS department
-        ma.classification,
+    ka.artist_name AS artist_full_name,
+    kw.title,
+    'Paintings' AS department,
+    NULL AS classification,
     NULL AS medium,
     NULL AS date,
     NULL AS begin_date,
     NULL AS end_date,
     NULL AS credit_line,
-    kcs.height_cm
-    kcs.width_cm
-    NULL AS depth -- all paintings so depth ~0, just leave as null since paintings in other datasets have depth including frames
-    kil.image_url
-    kil.object_url
-    km.museum_name AS museum
-    'kaggle.com/datasets/mexwell/famous-paintings' AS source
+    kcs.height_cm,
+    kcs.width_cm,
+    NULL AS depth, -- all paintings so depth ~0, just leave as null since paintings in other datasets have depth including frames
+    kil.image_url,
+    kil.object_url,
+    km.museum_name AS museum,
+    'Kaggle Famous Paintings Dataset' AS source
 FROM
 staging.stg_kaggle_artists AS ka 
 LEFT JOIN staging.stg_kaggle_work AS kw ON ka.artist_id = kw.artist_id

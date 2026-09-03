@@ -10,8 +10,6 @@ engine = create_engine(
     f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
 )
 
-#This script should be run only once since there is no logic for already existing files
-#Mainly just exists so that I can import the csvs into dbeaver easily for viewing as a postgres database
 
 excel_errors = ['#VALUE!', '#N/A', '#REF!', '#DIV/0!', '#NAME?', '#NULL!', '#NUM!']
 dimensions = ['Circumference (cm)', 'Depth (cm)', 'Diameter (cm)', 'Height (cm)', 'Length (cm)', 'Weight (kg)', 'Width (cm)', 'Seat Height (cm)', 'Duration (sec.)']

@@ -10,7 +10,7 @@ engine = create_engine(
     f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
 )
 
-project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 raw_dir = os.path.join(project_root, "raw")
 os.makedirs(raw_dir, exist_ok=True)
 ulan_path = os.path.join(raw_dir, "getty-ulan")

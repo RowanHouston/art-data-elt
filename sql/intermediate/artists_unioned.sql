@@ -35,7 +35,7 @@ SELECT
     artist_name,
     nationality,
     ui.gender,
-    first_name, --might be removed later (obtained for met/moma via getty??)
+    first_name,
     last_name,
     birth_year,
     death_year,
